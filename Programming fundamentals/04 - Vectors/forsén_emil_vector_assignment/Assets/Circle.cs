@@ -9,15 +9,14 @@ public class Circle : ProcessingLite.GP21
     public Vector2 circlePosition;
     public Vector2 mousePosition;
     public float diameter = 0.2f;
-    bool fire = false;
+    bool launched = false;
     float speed;
 
     Vector2 lineVector; 
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {   
         
     }
 
@@ -26,13 +25,12 @@ public class Circle : ProcessingLite.GP21
     {
 
         // Draws a new circle every frame
-        Background(155);
+        Background(155, 30, 155);
         Circle(circlePosition.x, circlePosition.y, diameter);
 
-        if (fire == true)
+        if (launched == true)
         {
             circlePosition = circlePosition + (lineVector * Time.deltaTime * Mathf.Clamp(speed, 0, 2f));
-
         }
 
         // Change direction when hitting a wall
@@ -40,6 +38,7 @@ public class Circle : ProcessingLite.GP21
         {
             lineVector.x *= -1;
         }
+
         if (circlePosition.y <= 0 || circlePosition.y >= Height)
         {
             lineVector.y *= -1;
@@ -48,7 +47,7 @@ public class Circle : ProcessingLite.GP21
         // Teleport the circle
         if (Input.GetMouseButtonDown(0))
         {
-            fire = false;
+            launched = false;
             circlePosition.x = MouseX;
             circlePosition.y = MouseY;            
         }
@@ -65,7 +64,7 @@ public class Circle : ProcessingLite.GP21
             mousePosition = new(MouseX, MouseY);
             lineVector = new(MouseX - circlePosition.x, MouseY - circlePosition.y);
             speed = Magnitude(lineVector);
-            fire = true;
+            launched = true;
         }  
 
     }

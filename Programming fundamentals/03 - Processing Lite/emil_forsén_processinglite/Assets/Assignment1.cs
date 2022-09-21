@@ -16,28 +16,6 @@ public class Assignment1 : ProcessingLite.GP21
 
     public bool scanlines;
 
-    public bool travelRight = true;
-    public bool travelDown = false;
-
-    ParabolicCurves myParabolicCurve = new(new Vector2(9,5), new Vector2(9,10), 20);
-    ParabolicCurves myParabolicCurve2 = new(new Vector2(9,10), new Vector2(5,5), 20);
-    
-
-    public class ParabolicCurves
-    {
-        public Vector2 axis1;
-        public Vector2 axis2;
-        public int numberOfLines;
-
-        // Constructor
-        public ParabolicCurves(Vector2 newAxis1, Vector2 newAxis2, int nol)
-        {
-            axis1 = newAxis1;
-            axis2 = newAxis2;
-            numberOfLines = nol;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -66,12 +44,6 @@ public class Assignment1 : ProcessingLite.GP21
         Stroke(25, 250, 0);
         Triangle(13, 2, 14, 4, 15, 2);
 
-        // Draw Parabolic curves
-
-        StrokeWeight(0.3f);
-        ParabolicCurve(myParabolicCurve.axis1, myParabolicCurve.axis2, myParabolicCurve.numberOfLines);
-        ParabolicCurve(myParabolicCurve2.axis1, myParabolicCurve2.axis2, myParabolicCurve2.numberOfLines);
-
         //My name (it's Emil)
         Stroke(255, 255, 255);
         StrokeWeight(2);
@@ -84,72 +56,6 @@ public class Assignment1 : ProcessingLite.GP21
         //Draw our scan lines
         Stroke(200, 0, 200, 64);
         StrokeWeight(0.5f);
-
-        //if (scanlines)
-        //{
-        //    for (int i = 0; i < Height / spaceBetweenLines; i++)
-        //    {
-
-        //        //Increase y-cord each time loop run
-        //        float y = i * spaceBetweenLines;
-
-        //        //Draw a line from left side of screen to the right
-        //        Line(0, y, Width, y);
-        //    }
-        //    scanlines = false;
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < Height / spaceBetweenLines; i++)
-        //    {
-        //        //Increase y-cord each time loop run
-        //        float y = i * spaceBetweenLines + spaceBetweenLines;
-
-        //        //Draw a line from left side of screen to the right
-        //        Line(0, y, Width, y);
-        //    }
-        //    scanlines = true;
-        //} 
-
-        //if (travelRight)
-        //{
-        //    myParabolicCurve.axis2.x++;
-        //}
-
-        //if (myParabolicCurve.axis2.x == myParabolicCurve.axis1.x)
-        //{
-        //    travelRight = false;
-        //}
-
-        //if (myParabolicCurve.axis2.x <= 0)
-        //{
-        //    travelRight = true;
-        //}
-
-        //if (!travelRight)
-        //{
-        //    myParabolicCurve.axis2.x--;
-        //}
-
-        //if (myParabolicCurve.axis2.y >= Height && myParabolicCurve.axis2.x <= 0)
-        //{
-        //    travelDown = true; 
-        //}
-
-        //if (travelDown)
-        //{
-        //    myParabolicCurve.axis2.y--;
-        //}
-
-        //if (myParabolicCurve.numberOfLines < 5)
-        //{
-        //    myParabolicCurve.numberOfLines++;
-        //}
-        //if (myParabolicCurve.numberOfLines > 100)
-        //{
-        //    myParabolicCurve.numberOfLines--;
-        //}
-
 
     }
 
@@ -181,48 +87,5 @@ public class Assignment1 : ProcessingLite.GP21
         Line(x, y, x, y - 4);
     }
  
-    void ParabolicCurve(Vector2 axis1, Vector2 axis2, int nol)
-    {
-        //float distanceBetweenLines = axis2.y / nol; 
-        //float adjustX = axis1.x;
-        //float adjustY = axis2.y;
-        //float adjustX2 = axis2.x;
-        //float adjustY2 = axis1.y;
-
-        Line(axis1.x, axis1.y, axis2.x, axis2.y); //Writes out the first line
-
-        Vector2 lineVectorAxis2 = new(axis1.x - axis2.x, axis1.y - axis2.y);
-        lineVectorAxis2 = lineVectorAxis2 / nol;
-
-        Debug.Log(lineVectorAxis2);
-
-        for (int i = 0; i < nol; i++)
-        {
-            Stroke(255, 255, 255);
-
-            axis1.x = axis1.x - lineVectorAxis2.y; //Adjusts the position of axis 1
-            axis2 = axis2 + lineVectorAxis2; //Adjusts the position of axis 2
-
-            //axis1.x = i * distanceBetweenLines + adjustX;
-            //axis2.y = adjustY - (nol / nol * i * distanceBetweenLines) + adjustY2;
-
-            if (i % 3 == 0)
-            {
-                Stroke(Random.Range(1, 255), 0, 0);
-            }
-
-            Line(axis1.x, axis1.y, axis2.x, axis2.y);
-        }
-        
-
-        //if (myParabolicCurve.axis2.x >= Width)
-        //{
-        //    myParabolicCurve.axis2.x--;
-        //    travelRight = false;
-        //}
-
-        //if (myParabolicCurve.axis2.x == Height)
-        //myParabolicCurve.axis2.x++;
-        //myParabolicCurve.axis1.y++;
-    }
+    
 }

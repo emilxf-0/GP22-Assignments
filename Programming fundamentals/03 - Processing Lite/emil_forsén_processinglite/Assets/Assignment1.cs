@@ -7,14 +7,10 @@ using UnityEngine;
 
 public class Assignment1 : ProcessingLite.GP21
 {
-    float spaceBetweenLines = 0.2f;
-
     public Vector2 ePosition;
     public Vector2 mPosition;
     public Vector2 iPosition;
     public Vector2 lPosition;
-
-    public bool scanlines;
 
     // Start is called before the first frame update
     void Start()

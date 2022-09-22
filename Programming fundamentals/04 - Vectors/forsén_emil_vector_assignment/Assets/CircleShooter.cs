@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Circle : ProcessingLite.GP21
+public class CircleShooter : ProcessingLite.GP21
 {
     public Vector2 circlePosition;
     public Vector2 mousePosition;
@@ -28,9 +28,9 @@ public class Circle : ProcessingLite.GP21
         Background(155, 30, 155);
         Circle(circlePosition.x, circlePosition.y, diameter);
 
-        if (launched == true)
+        if (launched)
         {
-            circlePosition = circlePosition + (lineVector * Time.deltaTime * Mathf.Clamp(speed, 0, 2f));
+            circlePosition = circlePosition + (lineVector * Time.deltaTime * Mathf.Clamp(speed, 0, 1.5f));
         }
 
         // Change direction when hitting a wall

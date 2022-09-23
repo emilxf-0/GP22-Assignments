@@ -221,6 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  acceleration: 2
-  deceleration: 10
+  acceleration: 3
+  deceleration: 3
   accelerationSpeed: 0
+  decelerate: 0
+  axis: {x: 0, y: 0}

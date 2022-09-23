@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class Movement : ProcessingLite.GP21
 {
-    Vector2 positionCircle1;
-    Vector2 positionCircle2;
+    Vector2 circle1;
+    Vector2 circle2;
 
-    float diameter = 2;
     public float speed = 5f;
     public float acceleration = 3f;
     public float deceleration = 3f;
@@ -18,20 +17,25 @@ public class Movement : ProcessingLite.GP21
     private float axisValueX;
     private float axisValueY;
 
-    
+    float diameter = 2;
+    float radius;
+
+    bool wrapRight;
+    bool wrapLeft;
+
     public Vector2 axis;
 
     void Start()
     {
         accelerationSpeed = 0;
-
+        radius = diameter / 2;
         // Startposition first circle
-        positionCircle1.x = Width / 2; //middle of the screen
-        positionCircle1.y = Height / 2;
+        circle1.x = Width / 2; //middle of the screen
+        circle1.y = Height / 2;
 
         // Startposition second circle
-        positionCircle2.x = positionCircle1.x; 
-        positionCircle2.y = positionCircle1.y + diameter * 1.5f; // Keeps the distance even if we fiddle with circle size
+        circle2.x = circle1.x; 
+        circle2.y = circle1.y + diameter * 1.5f; // Keeps the distance even if we fiddle with circle size
     }
 
     void Update()
@@ -44,8 +48,7 @@ public class Movement : ProcessingLite.GP21
         if (decelerate)
         {
             accelerationSpeed -= deceleration * Time.deltaTime;
-            positionCircle2 += axis * accelerationSpeed * Time.deltaTime;
-            
+            circle2 += axis * accelerationSpeed * Time.deltaTime;
     
             if (accelerationSpeed <= 0)
             {
@@ -71,17 +74,52 @@ public class Movement : ProcessingLite.GP21
             axis = new Vector2(axisValueX, axisValueY).normalized;
         }
 
+        Wrap(circle1);
+        Wrap(circle2);
         
         // Circle1
-        positionCircle1.x += Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
-        positionCircle1.y += Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
-        Circle(positionCircle1.x, positionCircle1.y, diameter);
+        circle1.x += Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
+        circle1.y += Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
+        Circle(circle1.x, circle1.y, diameter);
 
         // Circle2
-        positionCircle2.x += Input.GetAxisRaw("Horizontal") * accelerationSpeed * Time.deltaTime;
-        positionCircle2.y += Input.GetAxisRaw("Vertical") * accelerationSpeed * Time.deltaTime;
-        Circle(positionCircle2.x, positionCircle2.y, diameter);
+        circle2.x += Input.GetAxisRaw("Horizontal") * accelerationSpeed * Time.deltaTime;
+        circle2.y += Input.GetAxisRaw("Vertical") * accelerationSpeed * Time.deltaTime;
+        Circle(circle2.x, circle2.y, diameter);
 
     }
 
+
+    void Wrap(Vector2 vector)
+    {
+        if (vector.x >= Width)
+        {
+            wrapRight = true;
+        }
+
+        if (vector.x <= 0)
+        {
+            wrapLeft = true;
+        }
+
+        if (wrapRight)
+        {
+            Circle(vector.x - Width, vector.y, diameter);
+        }
+
+        if (wrapLeft)
+        {
+            Circle(vector.x - Width, vector.y, diameter);
+        }
+
+        if (vector.y + radius >= Height)
+        {
+            vector.y = Height - radius;
+        }
+
+        if (vector.y - radius < 0)
+        {
+            vector.y = 0 + radius;
+        }
+    }
 }

@@ -6,54 +6,81 @@ using UnityEngine;
 public class Movement : ProcessingLite.GP21
 {
     Player myPlayer;
-    Player myNewPlayer;
     Ball[] myBalls;
 
-    public float accelerationSpeed;
-
-    bool wrapRight;
-    bool wrapLeft;
-
-    public Vector2 axis;
+    bool gameOver = false;
 
     void Start()
     {
-        myPlayer = new Player(Width / 2, Height / 2, 1.5f);
-        myBalls = new Ball[10];
-
-        myPlayer.acceleration = new Vector2(7, 2);
-        myPlayer.deceleration = new Vector2(3, 2);
-
-        for (int i = 0; i < myBalls.Length; i++)
-        {
-            myBalls[i] = new Ball(Random.Range(3f, 5f), Random.Range(3f, 5f), Random.Range(0.5f, 2f));
-        }
-
+        StartGame();
     }
 
     void Update()
     {
-        Background(50, 50, 120);
-        
-        // Player
-        myPlayer.Draw();
-        myPlayer.MaxVelocity();
-        myPlayer.UpdatePosition();
-        Wrap(myPlayer.position); 
+        if (!gameOver)
+        {
+            Background(10, 10, 30);
 
-        // Balls
+            // Player
+            myPlayer.Draw();
+            myPlayer.MaxVelocity();
+            myPlayer.UpdatePosition();
+            Wrap(myPlayer);
+            Bounce(myPlayer);
+
+            // Balls
+            for (int i = 0; i < myBalls.Length; i++)
+            {
+                myBalls[i].Draw();
+                myBalls[i].UpdatePos();
+                myBalls[i].CheckCollision();
+
+                // Trigger the Game Over screen
+                if (CollisionDetection(myPlayer, myBalls[i]))
+                {
+                    gameOver = !gameOver;
+                    GetComponent<AudioSource>().Play();
+                }
+            }
+        }
+        
+
+        if (gameOver)
+        {
+            // Overlay
+            Fill(0, 0, 0, 10);
+            Stroke(0, 0, 0, 10);
+            Rect(0, 0, Width, Height);
+
+            // Game over box
+
+            Rect(3, 4, Width - 3, Height - 2);
+            Fill(255, 255, 255);
+            Stroke(255, 255, 255);
+            TextSize(50);
+            Text("Game Over", Width / 2, 6);
+            TextSize(20);
+            Text("Press escape to try again", Width / 2, Height / 2);
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                gameOver = !gameOver;
+                StartGame();
+            }
+        }
+    }
+
+    void StartGame()
+    {
+        myPlayer = new Player(Width / 2, Height / 2, 0.5f);
+        myBalls = new Ball[10];
+
+        myPlayer.acceleration = new Vector2(12, 12);
+        myPlayer.deceleration = new Vector2(10, 10);
+
         for (int i = 0; i < myBalls.Length; i++)
         {
-            myBalls[i].Draw();
-            myBalls[i].UpdatePos();
-            myBalls[i].CheckCollision();
-
-            // Trigger the Game Over screen
-            if (CollisionDetection(myPlayer, myBalls[i]))
-            {
-                GetComponent<Movement>().enabled = false;
-                GetComponent<GameOver>().enabled = true;
-            }
+            myBalls[i] = new Ball(Random.Range(3f, 5f), Random.Range(3f, 5f), Random.Range(0.2f, 0.5f));
         }
     }
    
@@ -76,38 +103,36 @@ public class Movement : ProcessingLite.GP21
     }
 
 
-    void Wrap(Vector2 vector)
+    void Wrap(Player player)
     {
-        if (vector.x >= Width)
+        if (player.position.x >= Width)
         {
-            wrapRight = true;
+            player.position.x = player.position.x - Width;  
         }
 
-        if (vector.x <= 0)
+        if (player.position.x <= 0)
         {
-            wrapLeft = true;
-        }
-
-        if (wrapRight)
-        {
-            myNewPlayer = new Player(vector.x - Width, vector.y, myPlayer.size);
-            myNewPlayer.Draw();
-        }
-
-        if (wrapLeft)
-        {
-            myNewPlayer = new Player(vector.x + Width, vector.y, myPlayer.size);
-            myNewPlayer.Draw();
-        }
-
-        if (vector.y + myPlayer.radius >= Height)
-        {
-            myPlayer.position.y = Height - myPlayer.radius;
-        }
-
-        if (vector.y - myPlayer.radius < 0)
-        {
-            myPlayer.position.y = 0 + myPlayer.radius;
+            player.position.x = player.position.x + Width;
         }
     }
+
+    void Bounce(Player player)
+    {
+        if (player.position.y + player.radius >= Height)
+        {
+            //player.velocity.y *= -0.5f;
+            player.position.y = Height - myPlayer.radius;
+           
+        }
+
+        if (player.position.y - player.radius < 0)
+        {
+            //player.velocity.y *= -0.5f;
+            player.position.y = 0 + myPlayer.radius;
+            
+            Debug.Log(player.velocity);    
+        }
+    }
+
+
 }

@@ -12,6 +12,10 @@ class Ball : ProcessingLite.GP21
     public float size;
     public float radius;
 
+    int r;
+    int g;
+    int b;
+
     public Ball(float x, float y, float size)
     {
         //Set our position when we create the code.
@@ -23,12 +27,18 @@ class Ball : ProcessingLite.GP21
         velocity = new Vector2();
         velocity.x = Random.Range(0, 11) - 5;
         velocity.y = Random.Range(0, 11) - 5;
+
+        // Gives a random color to every ball
+        r = Random.Range(150, 200);
+        g = Random.Range(75, 100);
+        b = Random.Range(10, 15);
+
     }
 
     public void Draw()
     {
-        Fill(100, 100, 100);
-        Stroke(100, 100, 100);
+        Fill(r, g, b);
+        Stroke(r, g, b);
         Circle(position.x, position.y, size);
     }
 
@@ -48,7 +58,5 @@ class Ball : ProcessingLite.GP21
         {
             velocity.x *= -1;
         }
-    }
-
-    
+    }    
 }

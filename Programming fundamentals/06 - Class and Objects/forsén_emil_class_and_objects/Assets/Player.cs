@@ -59,8 +59,8 @@ public class Player : ProcessingLite.GP21
 
     public void MaxVelocity()
     {
-        velocity.x = Mathf.Clamp(velocity.x, 0, 7);
-        velocity.y = Mathf.Clamp(velocity.y, 0, 7);
+        velocity.x = Mathf.Clamp(velocity.x, 0, 12);
+        velocity.y = Mathf.Clamp(velocity.y, 0, 12);
     }
 
 }

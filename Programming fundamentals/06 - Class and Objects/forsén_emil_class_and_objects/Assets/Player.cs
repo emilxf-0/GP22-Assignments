@@ -53,14 +53,19 @@ public class Player : ProcessingLite.GP21
         else
         {
             velocity -= deceleration * Time.deltaTime;
-            position += axis * velocity * Time.deltaTime;
+            position +=  axis * velocity * Time.deltaTime;
+
+            if (velocity.x <= 0 || velocity.y <= 0)
+            {
+                velocity *= 0;
+            }
         }
     }
 
     public void MaxVelocity()
     {
-        velocity.x = Mathf.Clamp(velocity.x, 0, 12);
-        velocity.y = Mathf.Clamp(velocity.y, 0, 12);
+        velocity.x = Mathf.Clamp(velocity.x, -12, 12);
+        velocity.y = Mathf.Clamp(velocity.y, -12, 12);
     }
 
 }

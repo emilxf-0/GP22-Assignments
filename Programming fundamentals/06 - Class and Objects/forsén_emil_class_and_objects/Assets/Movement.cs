@@ -48,7 +48,7 @@ public class Movement : ProcessingLite.GP21
         if (gameOver)
         {
             // Overlay
-            Fill(0, 0, 0, 10);
+            Fill(0, 0, 0, 7);
             Stroke(0, 0, 0, 10);
             Rect(0, 0, Width, Height);
 
@@ -120,19 +120,16 @@ public class Movement : ProcessingLite.GP21
     {
         if (player.position.y + player.radius >= Height)
         {
-            //player.velocity.y *= -0.5f;
+            player.velocity.y *= -0.5f;
             player.position.y = Height - myPlayer.radius;
-           
         }
 
         if (player.position.y - player.radius < 0)
         {
-            //player.velocity.y *= -0.5f;
+            player.velocity.y *= -0.5f;
             player.position.y = 0 + myPlayer.radius;
             
             Debug.Log(player.velocity);    
         }
     }
-
-
 }
